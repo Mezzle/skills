@@ -1,0 +1,6 @@
+{
+  "name": "mezzle-skills",
+  "skills": [
+    "./skills/productivity/obsidian-daily-log"
+  ]
+}
