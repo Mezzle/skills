@@ -9,10 +9,11 @@ tstack (https://github.com/t3dotgg/tstack), imported at commit
   full-stop
   leaving-pr-comments
   modernize
-  sol-loop
+  review-loop (renamed from sol-loop)
   takeover
 
-They are used under the following licence:
+They have been modified since import. They are used under the following
+licence:
 
 MIT License
 

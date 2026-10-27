@@ -30,8 +30,22 @@ Adapted from Theo Browne's [tstack](https://github.com/t3dotgg/tstack) (MIT, see
 - [full-stop](skills/engineering/full-stop/SKILL.md) — `full-send`, but stop when the PR is ready for a human to merge.
 - [leaving-pr-comments](skills/engineering/leaving-pr-comments/SKILL.md) — format comments an agent posts on your behalf.
 - [modernize](skills/engineering/modernize/SKILL.md) — rebase an old PR and decide whether it should still exist.
-- [sol-loop](skills/engineering/sol-loop/SKILL.md) — review a change with GPT Sol in a loop until both agents agree.
+- [review-loop](skills/engineering/review-loop/SKILL.md) — have a model from another provider review a change in a loop until both agree.
 - [takeover](skills/engineering/takeover/SKILL.md) — finish someone else's PR, branch or agent thread, keeping their credit.
+
+## Configuration
+
+The PR and review skills read `.agents/config.yaml` at the root of the repo they run in. Every key is optional. Without the file they fall back to their defaults and work out what they can from the repo.
+
+| Key | Used by | Meaning |
+|---|---|---|
+| `tracker` | file-pr, full-send | `jira`, `github`, `linear`, or `none`. Without it, inferred from recent PRs. |
+| `review_bots.request` | file-pr, babysit-pr | Bots to request a review from on filing and after every push, e.g. `copilot`. |
+| `review_bots.wait_for` | babysit-pr | Bots that must review the head before the PR is ready. Without it, `pr-wait` works it out from the PR. |
+| `reviewer` | review-loop | `provider`, `model`, optional `effort`. Defaults to the latest GPT Sol. |
+| `council` | council | A list of three `provider` / `model` / `effort` entries. Defaults to the latest flagship from three makers. |
+
+A model family such as `GPT Sol` means the latest in that family. An exact ID pins it. Examples: [Chemist4U](examples/config.chemist4u.yaml), [personal](examples/config.personal.yaml).
 
 ## Structure
 

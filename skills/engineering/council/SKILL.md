@@ -6,18 +6,27 @@ description: Trigger this if the user says 'council'.
 # Council
 
 Bring in three delegates to help with the user's request, usually for review
-or feedback. Use one strong model from each of three different providers, at
-high reasoning effort. If the user's instructions name council members, use
-those. Otherwise pick the latest flagship model from each provider, for
-example Claude Opus, GPT Sol, and Gemini Pro.
+or feedback. Use one strong model from each of three different model makers,
+at high reasoning effort. Two members can share a route: GPT and Gemini can
+both run through Copilot.
+
+Pick the members in this order:
+
+1. Members the user names in the request.
+2. The `council` list in `.agents/config.yaml` at the repo root. Each entry has
+   a `provider` (the route, as the harness names it), a `model`, and an
+   optional `effort`. A model family such as `GPT Sol` means the latest model
+   in that family. An exact ID pins it.
+3. The latest flagship from each maker, for example Claude Opus, GPT Sol, and
+   Gemini Pro.
 
 In T3 Code, use `orchestrator_capabilities` to resolve the models, then
 `delegate_task` to start one delegate per model in parallel. Elsewhere, use
-the harness's subagent tools. If you cannot reach three providers, or a named
-member is unavailable, report it instead of substituting.
+the harness's subagent tools. If you cannot reach three makers, or a named or
+configured member is unavailable, report it instead of substituting.
 
 Give each delegate the request and relevant context. For review or feedback,
-keep their work read-only. Collect their responses and summarize the useful
+keep their work read-only. Collect their responses and summarise the useful
 findings, disagreements, and recommended next steps.
 
 For a code review, ask each delegate for a score out of 10.

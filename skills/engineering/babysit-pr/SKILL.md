@@ -8,6 +8,19 @@ description: Monitor a pull request through review and CI. Use when the user ask
 Many repos have AI review bots. They're helpful, even if they are not always
 right.
 
+## Repo settings
+
+Read `.agents/config.yaml` at the repo root if it exists. Two keys apply here:
+
+- `review_bots.request`: bots to request a review from, such as `copilot`.
+  Request them again after every push, because Copilot does not review a new
+  head on its own: `gh pr edit <pr> --add-reviewer @copilot`.
+- `review_bots.wait_for`: bots that must review the current head before the PR
+  is ready. Pass each to `pr-wait` as `--bot <name>`.
+
+Without the file or the key, you do not know which bots review this repo. Do not
+guess. Let `pr-wait` work it out from the PR, and handle whatever reviews arrive.
+
 ## Waiting
 
 Never write your own watcher, polling loop, or `sleep` loop. Use one watcher
@@ -22,7 +35,7 @@ a check fails, the required checks pass, someone comments or reviews, or the
 branch conflicts.
 
 - **Only the thread that owns the PR watches it.** If you are a delegated
-  child task (a reviewer, a Sol round, any `delegate_task` child), never call
+  child task (a reviewer, a review-loop round, any `delegate_task` child), never call
   `watch_pull_request`. The parent owns the PR. Do not watch PRs you are not
   working on.
 - **A wake is news, not a merge decision.** Check the merge gate yourself.
@@ -41,18 +54,22 @@ Wait with `scripts/pr-wait` from this skill's directory (use its absolute
 path).
 
 ```bash
-pr-wait <pr> [--repo owner/name] [--until ready|green|any-change]
+pr-wait <pr> [--repo owner/name] [--until ready|green|any-change] [--bot NAME ...]
 ```
 
 It prints one line per real event. It exits 0 when the `--until` condition is
 met or the PR merges, 1 when it needs you (a required check failed, conflicts,
 unresolved threads, PR closed), and 2 on bad input.
 
-- `ready` (default): required checks green, Greptile or Macroscope reviewed the
+- `ready` (default): required checks green, every waited-for bot reviewed the
   head, and no unresolved threads. Use this to babysit.
-- `green`: required checks only. Use it when the repo has no Greptile or
-  Macroscope.
+- `green`: required checks only. Use it when only CI matters.
 - `any-change`: exit on the first event.
+
+`--bot` takes `greptile`, `macroscope`, `copilot`, or `none`. Without it,
+`pr-wait` waits for Greptile or Macroscope once either appears on the PR, and
+for Copilot only while its review request is pending. If it reports that a
+waited-for Copilot was not asked to review the head, request it.
 
 In Claude Code, run it with the Monitor tool (`timeout_ms: 3600000`), so each
 line wakes you. Without a monitor, run it as one long command. It ends on its
@@ -80,6 +97,9 @@ finding against the source before changing code. Fix real findings and CI
 failures, distinguish repository failures from infrastructure flakes, and reply
 with a written reason when dismissing false positives.
 
+Copilot posts its findings as review threads. Check each one against the
+source like any other finding.
+
 If the repo has `.macroscope/check-run-agents/*.md`, read those rules before you
 reply to a Macroscope finding. Its findings cite them.
 
@@ -101,12 +121,13 @@ narrows code.
 
 ## Base branch and merging
 
-Keep an eye on changes to `main` and rebase when needed. `pr-wait` reports when
+Keep an eye on changes to `main` and rebase when needed. After each push,
+request the bots in `review_bots.request` again. `pr-wait` reports when
 new base commits touch this PR's files, and when the PR becomes BEHIND or DIRTY.
 `watch_pull_request` reports conflicts only, so check for BEHIND yourself
 before you call the PR ready.
 If an overlapping PR makes this one obsolete, stop monitoring, report it to the
-user, and ask before closing the PR unless closure was explicitly authorized.
+user, and ask before closing the PR unless closure was explicitly authorised.
 
 If nothing has changed, stay quiet rather than posting filler comments. Stop
 when `pr-wait` exits 0, or in T3 Code when the merge gate passes on the latest

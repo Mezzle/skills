@@ -46,15 +46,15 @@ one appears.
    smallest change that works. Fix the case that happened, not every case
    that could. If you are on the default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
-3. **Get feedback.** Use the `sol-loop` skill to verify changes.
+3. **Get feedback.** Use the `review-loop` skill to verify changes.
 4. **File the PR** with the `file-pr` skill. Rebase onto the latest default
    branch first. Add one short line to the description that says how you proved
    the change.
 5. **Babysit the PR** with the `babysit-pr` skill. Fix real findings and CI
    failures. Get proof for each fix before you push it.
 6. **Merge** when the merge gate passes.
-7. **Report** in your final message: the PR link, the merge commit, your proof,
-   and each decision you made for the user.
+7. **Report** in your final message: the PR link, the ticket if there is one,
+   the merge commit, your proof, and each decision you made for the user.
 
 Stay active from step 1 to step 7. If you end your turn while checks or bots are
 pending, the work stops, because nobody will prompt you again. Wait with the
@@ -70,9 +70,9 @@ reproduction, a screenshot. Use the most direct proof the change allows:
 - Reproduce the original failure, apply the fix, then watch the same
   reproduction pass.
 - Run the checks that the repo's CI runs (typecheck, lint, tests).
-- Add one focused test that fails without the fix, when the behavior has none
+- Add one focused test that fails without the fix, when the behaviour has none
   and the repo has a test setup.
-- For UI and runtime behavior, run the app and look at the change. Green mocked
+- For UI and runtime behaviour, run the app and look at the change. Green mocked
   tests do not prove that the user experience works. Attach screenshots to the
   PR when they help and you have a way to upload them.
 

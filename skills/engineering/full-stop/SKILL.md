@@ -9,7 +9,7 @@ Do the same work as `full-send`, but stop with the PR ready for the user to merg
 Never merge it.
 
 Read [full-send](../full-send/SKILL.md) and follow its workflow, proof rules,
-review, and babysitting steps. An explicit "full stop" request authorizes that
+review, and babysitting steps. An explicit "full stop" request authorises that
 work without a separate "full send" request. That includes full-send's
 testing permission. A "full stop" request is the permission for the test
 methods Proof needs, even when a project file says to ask first, for
@@ -30,7 +30,7 @@ cannot prevent automatic merging, report the blocker before proceeding.
 
 Use full-send's merge gate as the readiness check. Replace its merge and
 final report steps with a handoff. Proof and review must cover the final diff;
-recheck behavior changes and meaningful conflict fixes before handoff.
+recheck behaviour changes and meaningful conflict fixes before handoff.
 
 Fetch the target branch and check the live PR's head, base, checks, reviews,
 and mergeability. Confirm it is open, not a draft, and not set to merge

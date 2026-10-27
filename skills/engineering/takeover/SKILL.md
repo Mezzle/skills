@@ -14,9 +14,9 @@ later corrections. Resolve the handoff to the actual code and current head,
 and account for uncommitted work. Treat the handoff as context, not proof.
 
 For a replacement PR, import the original commits onto a new branch and add
-your fixes separately. Honor an explicitly requested in-place or stacked
+your fixes separately. Honour an explicitly requested in-place or stacked
 continuation instead. Do not overwrite unrelated work or change the original
-PR without authorization.
+PR without authorisation.
 
 Preserve Git authorship and existing co-author trailers. Credit the original
 contributors in the PR description and link the original PR when there is one.
@@ -27,7 +27,7 @@ attribution is not a substitute for contributor credit.
 Use `modernize` to update the continuation against its intended base and
 current architecture. Rework what is necessary to finish the same goal, not
 unrelated features. Simplify the implementation without dropping intended
-behavior or surfaces. Recheck the source PR too: it may have improved while
+behaviour or surfaces. Recheck the source PR too: it may have improved while
 you were working.
 
 Independently verify the original failure and realistic workflows, following
@@ -36,7 +36,7 @@ experience works. State what remains unverified.
 
 When the requested finish includes a PR, use `file-pr` to file or update it,
 then `babysit-pr` rather than stopping at creation. Use `leaving-pr-comments`
-for replies. Merge or close the original PR only when authorized.
+for replies. Merge or close the original PR only when authorised.
 
 Report what you inherited, what you changed, how you verified it, how credit
 was preserved, and any remaining decision.
