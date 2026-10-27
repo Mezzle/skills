@@ -1,7 +1,14 @@
 {
   "name": "mezzle-skills",
   "skills": [
-    "./skills/engineering/managing-llm-configs",
-    "./skills/productivity/obsidian-daily-log"
+    "./skills/engineering/babysit-pr",
+    "./skills/engineering/council",
+    "./skills/engineering/file-pr",
+    "./skills/engineering/full-send",
+    "./skills/engineering/full-stop",
+    "./skills/engineering/leaving-pr-comments",
+    "./skills/engineering/modernize",
+    "./skills/engineering/review-loop",
+    "./skills/engineering/takeover"
   ]
 }

@@ -30,6 +30,7 @@ The `description` is what the model reads when deciding whether to load the skil
 ## Style
 
 - Terse. Cut filler.
-- No emojis unless the user explicitly asks.
+- British English.
+- Emoji only as status markers (✅, ❌, 🟡, 🤖), never in prose.
 - File:line references where useful.
-- Behaviors are universal; user-specific config (paths, templates) lives in instructions, not hardcoded values.
+- Behaviours are universal; user-specific config (paths, templates) lives in instructions, not hardcoded values. Per-repo settings for the PR and review skills live in `.agents/config.yaml`; see `README.md`.

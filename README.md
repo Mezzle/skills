@@ -14,18 +14,38 @@ Or copy any skill directory into your `~/.claude/skills/`:
 
 ```bash
 git clone git@github.com:Mezzle/skills.git
-cp -r skills/skills/productivity/obsidian-daily-log ~/.claude/skills/
+cp -r skills/skills/<bucket>/<skill-name> ~/.claude/skills/
 ```
 
 ## Skills
 
 ### Engineering
 
-- [managing-llm-configs](skills/engineering/managing-llm-configs/SKILL.md) — put an LLM call under remote, targetable config control (model + params + prompt) via LaunchDarkly AI Configs behind an OpenFeature flag, with PostHog observability and safe fallbacks. Workers/edge gotchas included.
+Adapted from Theo Browne's [tstack](https://github.com/t3dotgg/tstack) (MIT, see [NOTICE](NOTICE)).
 
-### Productivity
+- [babysit-pr](skills/engineering/babysit-pr/SKILL.md) — watch a PR through CI and review bots, fix the real findings.
+- [council](skills/engineering/council/SKILL.md) — get review from three models on different providers, loop until they agree.
+- [file-pr](skills/engineering/file-pr/SKILL.md) — file a short PR that leads with the problem, shows the change in a visual, and gives evidence and merge danger. The description shape is adapted from Matt Pocock's [`pr`](https://github.com/mattpocock/skills) skill (MIT, see [NOTICE](NOTICE)).
+- [full-send](skills/engineering/full-send/SKILL.md) — take a change to a merged PR unattended: prove, review, file, babysit, merge.
+- [full-stop](skills/engineering/full-stop/SKILL.md) — `full-send`, but stop when the PR is ready for a human to merge.
+- [leaving-pr-comments](skills/engineering/leaving-pr-comments/SKILL.md) — format comments an agent posts on your behalf.
+- [modernize](skills/engineering/modernize/SKILL.md) — rebase an old PR and decide whether it should still exist.
+- [review-loop](skills/engineering/review-loop/SKILL.md) — have a model from another provider review a change in a loop until both agree.
+- [takeover](skills/engineering/takeover/SKILL.md) — finish someone else's PR, branch or agent thread, keeping their credit.
 
-- [obsidian-daily-log](skills/productivity/obsidian-daily-log/SKILL.md) — append-only daily-log discipline for Obsidian vaults. Reads first, dedups, leaves dataview blocks alone, redacts PII.
+## Configuration
+
+The PR and review skills read `.agents/config.yaml` at the root of the repo they run in. Every key is optional. Without the file they fall back to their defaults and work out what they can from the repo.
+
+| Key | Used by | Meaning |
+|---|---|---|
+| `tracker` | file-pr, full-send | `jira`, `github`, `linear`, or `none`. Without it, inferred from recent PRs. |
+| `review_bots.request` | file-pr, babysit-pr | Bots to request a review from on filing and after every push, e.g. `copilot`. |
+| `review_bots.wait_for` | babysit-pr | Bots that must review the head before the PR is ready. Without it, `pr-wait` works it out from the PR. |
+| `reviewer` | review-loop | `provider`, `model`, optional `effort`. Defaults to the latest GPT Sol. |
+| `council` | council | A list of three `provider` / `model` / `effort` entries. Defaults to the latest flagship from three makers. |
+
+A model family such as `GPT Sol` means the latest in that family. An exact ID pins it. Examples: [Chemist4U](examples/config.chemist4u.yaml), [personal](examples/config.personal.yaml).
 
 ## Structure
 

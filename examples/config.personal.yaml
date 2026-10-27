@@ -1,0 +1,28 @@
+# Copy to .agents/config.yaml at the root of a personal repo.
+# Read by babysit-pr, file-pr, council, review-loop, and full-send.
+# Every key is optional. A missing key falls back to the skill's default.
+
+tracker: github # jira | github | linear | none
+
+# Reviewers vary here, so leave wait_for out and let pr-wait work it out
+# from the PR. List a bot only once you know it reviews this repo.
+review_bots:
+  request: []
+
+# provider: the route, as the harness names it (T3 Code: orchestrator_capabilities).
+# model: a family means the latest in it; an exact ID pins it.
+reviewer:
+  provider: Codex
+  model: GPT Sol
+  effort: high
+
+council:
+  - provider: Claude
+    model: Claude Opus
+    effort: high
+  - provider: Codex
+    model: GPT Sol
+    effort: high
+  - provider: OpenCode
+    model: zai-coding-plan/glm-5.3
+    effort: max

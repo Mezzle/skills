@@ -1,0 +1,27 @@
+# Copy to .agents/config.yaml at the root of a Chemist4U repo.
+# Read by babysit-pr, file-pr, council, review-loop, and full-send.
+# Every key is optional. A missing key falls back to the skill's default.
+
+tracker: jira # jira | github | linear | none
+
+review_bots:
+  request: [copilot] # asked to review on filing and after every push
+  wait_for: [copilot] # must review the current head before the PR is ready
+
+# provider: the route, as the harness names it (T3 Code: orchestrator_capabilities).
+# model: a family means the latest in it; an exact ID pins it.
+reviewer:
+  provider: Copilot
+  model: GPT Sol
+  effort: high
+
+council:
+  - provider: Claude
+    model: Claude Opus
+    effort: high
+  - provider: Copilot
+    model: GPT Sol
+    effort: high
+  - provider: Copilot
+    model: Gemini Argon
+    effort: high
