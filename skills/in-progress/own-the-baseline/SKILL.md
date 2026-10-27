@@ -1,6 +1,7 @@
 ---
 name: own-the-baseline
-description: Run when you're about to call an error, warning, or failing check "pre-existing," "unrelated," or "out of scope" in a codebase you've contributed to — or when verifying a change with lint/typecheck/test/build. Treat every red result as ours: fix it, or surface it for an explicit decision. Never let "pre-existing" be a reason to leave it.
+description: >-
+  Run when you're about to call an error, warning, or failing check "pre-existing," "unrelated," or "out of scope" in a codebase you've contributed to — or when verifying a change with lint/typecheck/test/build. Treat every red result as ours: fix it, or surface it for an explicit decision. Never let "pre-existing" be a reason to leave it.
 ---
 
 # Own the Baseline
