@@ -36,3 +36,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+The PR description shape in skills/engineering/file-pr (Summary with a visual,
+Evidence as before and after, Merge Danger) is adapted from Matt Pocock's `pr`
+skill (https://github.com/mattpocock/skills, skills/engineering/pr), used under
+the MIT licence, Copyright (c) 2026 Matt Pocock. That skill's menu of visuals
+and its placement guidance come from Dex Horthy's `show-me` skill
+(https://github.com/humanlayer/skills, plugins/show-me/skills/show-me).

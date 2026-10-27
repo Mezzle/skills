@@ -1,6 +1,6 @@
 ---
 name: file-pr
-description: File a concise pull request. Use when the user asks to file, open, or create a PR.
+description: File a concise pull request, or rewrite an open one's description. Use when the user asks to file, open, or create a PR, or when another skill files or updates one.
 ---
 
 # File PR
@@ -35,9 +35,42 @@ GOOD
 
 > ✅ perf(server): cut websocket frame size by 70%+ with gzipping
 
-Open the description with a simple explanation of the problem based on the
-user's original prompt, then briefly explain the solution. Do not lead with an
-implementation inventory:
+## Description
+
+Use this shape, in this order. Skills that add their own section (council,
+review-loop) put it after Merge Danger and before the closing model line.
+
+```markdown
+## Summary
+
+<the problem, then the fix, in a sentence or two>
+
+<one visual>
+
+## Evidence
+
+- **Before:** <failing test, error output, screenshot>
+  **After:** <the same thing passing>
+- **Not verified:** <what you could not prove>
+
+## Merge Danger
+
+**Door:** <one-way or two-way>, <why>
+**Blast Radius:** <what could break, and for whom>
+
+<ticket link, extra sections>
+
+Created with <model> in <harness>.
+```
+
+Keep prose short and use the repo's own terms (its glossary or `CONTEXT.md` if
+it has one).
+
+### Summary
+
+Open with a simple explanation of the problem based on the user's original
+prompt, then briefly explain the solution. Do not lead with an implementation
+inventory:
 
 BAD
 
@@ -46,6 +79,46 @@ BAD
 GOOD
 
 > ✅ My "new worktree" default was ignored when starting new threads on existing worktrees. Super unintuitive. Now your preferences always apply.
+
+Under it, add the smallest visual that makes the change clear:
+
+- **Pseudocode** for logic or an algorithm.
+- **Call tree** for runtime control flow.
+- **Component tree** for UI structure, with the state and module boundaries that
+  matter.
+- **File tree** for file responsibilities or a broad refactor.
+- **Mermaid** sequence or flow diagram for interaction or data flow between
+  parts.
+- **`diff` of any of the above** when the shape already exists and the point is
+  what changes:
+
+```diff
+ submitForm
+   createSession
+     persistPrompt
++    expandSkillMention
+     launchAgent
+```
+
+Show only the calls, files, props and states the reader needs. One visual is
+usual and two is plenty. Skip it for a one-line fix.
+
+### Evidence
+
+Put the proof here: what you observed yourself, shown as before and after.
+Screenshots are best for a visual change. Test runs and command output come
+next. Name the test that failed without the change and passes with it. For a
+new feature the "before" is that test, or a synth or build, failing or lacking
+the new output. Always list what you could not verify.
+
+### Merge Danger
+
+A two-way door can be rolled back cheaply. A one-way door cannot: data
+migrations, deletions, published APIs, anything users start depending on.
+Say which, and when a two-way door turns one-way. The blast radius is who or
+what breaks if it goes wrong: consumers, environments, layout, mobile.
+
+### Ticket and attribution
 
 Link the ticket the way recent PRs in the repo do. Usually a Jira or Linear key
 goes in the title or branch name, and a GitHub issue goes in the body as
@@ -57,6 +130,14 @@ End the description with the public model name and harness that made the
 changes, for example `Created with <model> in <harness>.` Include subagent
 models that wrote part of the change. Use the model name the harness reports.
 If model identity is unavailable, name the harness without guessing a model.
+
+### Updating an open PR
+
+When a later push changes behaviour or the diff's shape (a review fix, a
+rebase, a takeover), edit the body with `gh pr edit <pr> --body-file <file>` so
+Summary and Evidence describe the current head. Keep the other sections.
+
+## Opening the PR
 
 Before submission, check the title, description, quotes, and attachments for
 secrets and private details.

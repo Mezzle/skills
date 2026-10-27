@@ -85,6 +85,8 @@ For a `MODERNIZE` disposition:
    failures from pre-existing or infrastructure failures.
 6. Push with `--force-with-lease` tied to the previously observed remote head.
    If the lease fails, fetch and reassess rather than overwriting new work.
+7. If the rebase changed what the PR does, update its description with
+   `file-pr`.
 
 Do not merge the PR.
 

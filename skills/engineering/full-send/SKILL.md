@@ -48,8 +48,7 @@ one appears.
 2. **Prove it.** Get proof for every change you made. See "Proof".
 3. **Get feedback.** Use the `review-loop` skill to verify changes.
 4. **File the PR** with the `file-pr` skill. Rebase onto the latest default
-   branch first. Add one short line to the description that says how you proved
-   the change.
+   branch first. Put your proof in the description's Evidence section.
 5. **Babysit the PR** with the `babysit-pr` skill. Fix real findings and CI
    failures. Get proof for each fix before you push it.
 6. **Merge** when the merge gate passes.

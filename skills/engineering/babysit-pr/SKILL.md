@@ -97,6 +97,9 @@ finding against the source before changing code. Fix real findings and CI
 failures, distinguish repository failures from infrastructure flakes, and reply
 with a written reason when dismissing false positives.
 
+When a fix changes behaviour, update the PR description as `file-pr`
+describes before you request the bots again.
+
 Copilot posts its findings as review threads. Check each one against the
 source like any other finding.
 
