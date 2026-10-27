@@ -14,18 +14,12 @@ Or copy any skill directory into your `~/.claude/skills/`:
 
 ```bash
 git clone git@github.com:Mezzle/skills.git
-cp -r skills/skills/productivity/obsidian-daily-log ~/.claude/skills/
+cp -r skills/skills/<bucket>/<skill-name> ~/.claude/skills/
 ```
 
 ## Skills
 
-### Engineering
-
-- [managing-llm-configs](skills/engineering/managing-llm-configs/SKILL.md) — put an LLM call under remote, targetable config control (model + params + prompt) via LaunchDarkly AI Configs behind an OpenFeature flag, with PostHog observability and safe fallbacks. Workers/edge gotchas included.
-
-### Productivity
-
-- [obsidian-daily-log](skills/productivity/obsidian-daily-log/SKILL.md) — append-only daily-log discipline for Obsidian vaults. Reads first, dedups, leaves dataview blocks alone, redacts PII.
+_None yet._
 
 ## Structure
 
