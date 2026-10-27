@@ -19,7 +19,19 @@ cp -r skills/skills/<bucket>/<skill-name> ~/.claude/skills/
 
 ## Skills
 
-_None yet._
+### Engineering
+
+Adapted from Theo Browne's [tstack](https://github.com/t3dotgg/tstack) (MIT, see [NOTICE](NOTICE)).
+
+- [babysit-pr](skills/engineering/babysit-pr/SKILL.md) — watch a PR through CI and review bots, fix the real findings.
+- [council](skills/engineering/council/SKILL.md) — get review from three models on different providers, loop until they agree.
+- [file-pr](skills/engineering/file-pr/SKILL.md) — file a short PR that leads with the problem, not a change inventory.
+- [full-send](skills/engineering/full-send/SKILL.md) — take a change to a merged PR unattended: prove, review, file, babysit, merge.
+- [full-stop](skills/engineering/full-stop/SKILL.md) — `full-send`, but stop when the PR is ready for a human to merge.
+- [leaving-pr-comments](skills/engineering/leaving-pr-comments/SKILL.md) — format comments an agent posts on your behalf.
+- [modernize](skills/engineering/modernize/SKILL.md) — rebase an old PR and decide whether it should still exist.
+- [sol-loop](skills/engineering/sol-loop/SKILL.md) — review a change with GPT Sol in a loop until both agents agree.
+- [takeover](skills/engineering/takeover/SKILL.md) — finish someone else's PR, branch or agent thread, keeping their credit.
 
 ## Structure
 
