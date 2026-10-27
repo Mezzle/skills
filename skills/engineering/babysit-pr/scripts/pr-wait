@@ -177,15 +177,16 @@ def snippet(body: str, limit: int = 100) -> str:
     return text if len(text) <= limit else text[: limit - 3] + "..."
 
 
-def verdict(body: str) -> str:
+def verdict(body: str, heading: bool = False) -> str:
     """The verdict line of a bot summary (Macroscope, Greptile), if it has one.
-    Copilot puts its verdict in the first heading of its review."""
+    With heading, fall back to the first heading: Copilot's review puts its
+    verdict there."""
     lines = plain(body).splitlines()
     for line in lines:
         if re.search(r"verdict|confidence score", line, re.IGNORECASE):
             return snippet(line.replace("*", ""), 80)
-    heading = next((line for line in lines if line.startswith("#")), "")
-    return snippet(heading.lstrip("# "), 80) if heading else ""
+    first = next((line for line in lines if line.startswith("#")), "") if heading else ""
+    return snippet(first.lstrip("# "), 80) if first else ""
 
 
 def digest(body: str) -> str:
@@ -481,7 +482,7 @@ class Watcher:
                 failed = [name for name, c in own_checks.items() if c["bucket"] in FAILED]
                 head_reviews = [r["body"] for r in own_reviews if (r.get("commit") or {}).get("oid") == head]
                 detail = "; ".join(filter(None, [
-                    next((v for v in map(verdict, [s["body"] for s in summaries] + head_reviews) if v), ""),
+                    next((v for v in [verdict(s["body"]) for s in summaries] + [verdict(b, heading=True) for b in head_reviews] if v), ""),
                     f"failed: {', '.join(failed)}" if failed else "",
                 ]))
                 tag = " (advisory, not waited on)" if bot in ADVISORY_BOTS else ""
