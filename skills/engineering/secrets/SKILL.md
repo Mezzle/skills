@@ -77,9 +77,10 @@ Creating, editing or deleting a vault item changes the user's records outside
 the repo. Confirm first, with the vault, item name and fields (values omitted).
 Let the manager generate new passwords (`op item create --generate-password`).
 Any other value travels on stdin from the process that holds it
-(`... | op item create -`, `... | bw encode | bw create item --quiet`), so it
-never lands in an argument, the process list or a file. Bitwarden writes print
-the whole item; keep `--quiet` on `bw create` and `bw edit`.
+(`... | op item create -`, `... | bw encode | bw create item`), so it never
+lands in an argument, the process list or a file. Writes and edits in both
+CLIs print the whole item, so keep only its ID:
+`op item create ... --format json | jq -r .id`, `bw create item ... | jq -r .id`.
 
 ## Files and the repo
 
