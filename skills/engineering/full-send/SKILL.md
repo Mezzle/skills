@@ -46,7 +46,10 @@ one appears.
    smallest change that works. Fix the case that happened, not every case
    that could. If you are on the default branch, create a branch first.
 2. **Prove it.** Get proof for every change you made. See "Proof".
-3. **Get feedback.** Use the `review-loop` skill to verify changes.
+3. **Get feedback.** Use the `review-loop` skill to verify changes, including
+   its optional security pass when enabled. Carry its findings and access
+   limitations into proof and readiness; reuse that pass rather than starting
+   a second security loop.
 4. **File the PR** with the `file-pr` skill. Rebase onto the latest default
    branch first. Put your proof in the description's Evidence section.
 5. **Babysit the PR** with the `babysit-pr` skill. Fix real findings and CI
@@ -87,6 +90,9 @@ Full confidence means all of these are true on the latest commit:
 - Review bots have finished, and each finding is fixed or dismissed with a
   written reason.
 - No human review still requests changes.
+- Any requested or automatically triggered security review covers the current
+  behaviour, has no open material findings and is complete under its access
+  requirements.
 - The branch is up to date with the default branch, and GitHub reports it as
   mergeable.
 

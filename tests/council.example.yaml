@@ -1,0 +1,12 @@
+# Copy the council entries from the target repo's .agents/config.yaml, or pass
+# that file directly. Resolve exact IDs and supported options with the harness.
+council:
+  - provider: Codex
+    model: GPT Sol
+    effort: high
+  - provider: Claude
+    model: Claude Opus
+    effort: high
+  - provider: OpenCode
+    model: Gemini Pro
+    effort: high

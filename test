@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+test_repo=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$test_repo"
+
+case "${1:-check}" in
+  check)
+    if [ "$#" -gt 0 ]; then shift; fi
+    python3 scripts/skill_tests.py static
+    exec python3 -m unittest discover -s tests -v "$@"
+    ;;
+  claude)
+    shift
+    exec python3 scripts/skill_tests.py behaviour --provider claude --model opus --effort high "$@"
+    ;;
+  codex)
+    shift
+    exec python3 scripts/skill_tests.py behaviour --provider codex "$@"
+    ;;
+  *) exec python3 scripts/skill_tests.py "$@" ;;
+esac
