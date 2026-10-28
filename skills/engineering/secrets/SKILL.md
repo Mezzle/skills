@@ -76,8 +76,10 @@ Lock nothing you did not unlock; the session belongs to the user.
 Creating, editing or deleting a vault item changes the user's records outside
 the repo. Confirm first, with the vault, item name and fields (values omitted).
 Let the manager generate new passwords (`op item create --generate-password`).
-Sensitive field values go in a JSON template file, not command-line
-assignments, which show in the process list. Delete the template afterwards.
+Any other value travels on stdin from the process that holds it
+(`... | op item create -`, `... | bw encode | bw create item --quiet`), so it
+never lands in an argument, the process list or a file. Bitwarden writes print
+the whole item; keep `--quiet` on `bw create` and `bw edit`.
 
 ## Files and the repo
 
