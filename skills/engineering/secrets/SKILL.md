@@ -22,7 +22,10 @@ secrets:
 Without it, use the user's own instructions (for example, a line in their
 global `CLAUDE.md` saying which manager covers which kind of work). Still
 unknown: ask. One repo, one manager. A secret stays in the manager that owns
-it; copy nothing between managers or into another store.
+it: copy nothing between managers or into a plaintext file. Setting a CI or
+runtime secret from it (`gh secret set`) is fine; if `gh secret list` already
+shows that name, confirm with the user first, as `gh secret set` overwrites
+without warning.
 
 ## Read a secret
 
@@ -40,17 +43,20 @@ op read op://dev/deploy/key | gh secret set DEPLOY_KEY
 
 `op run` masks values in its output; `op read` prints raw, so pipe it.
 
-**Bitwarden** (`bw`). Reference: the item ID. Find it without printing the
-item: `bw list items --search <name> | jq '.[] | {id, name}'`.
+**Bitwarden** (`bw`). Reference: the item ID. Every `bw` call needs the
+session key the user handed over (see below) in `BW_SESSION`, read from the
+delivered file in the same command. Never pass it as `--session`: argv shows
+in the process list.
 
 ```bash
-API_TOKEN="$(bw get password <item-id>)" npm test
-bw get password <item-id> | gh secret set API_TOKEN
+BW_SESSION="$(<"<session-file>")" bw list items --search <name> | jq '.[] | {id, name}'
+API_TOKEN="$(BW_SESSION="$(<"<session-file>")" bw get password <item-id>)" npm test
+BW_SESSION="$(<"<session-file>")" bw get password <item-id> | gh secret set API_TOKEN
 ```
 
 `bw` never masks. Run only commands that leave the value out of their output:
 no `printenv`, `env`, `set -x` or debug logging with the variable in scope.
-Check the vault state with `bw status | jq -r .status`.
+Check the vault state with `BW_SESSION="$(<"<session-file>")" bw status | jq -r .status`.
 
 `op item get --reveal`, `op run --no-masking`, `bw get item`, unfiltered
 `bw list items` and `cat` on a plaintext secret file all print values. Use the
@@ -63,11 +69,15 @@ in their own terminal. `op` may show a biometric prompt; that is the user
 approving the read.
 
 Shell state does not persist between tool calls, so an exported `BW_SESSION`
-is gone by the next call. When the user wants to hand over a session key or a
-one-off value, use the harness's secret prompt (T3 Code: `request_secret`,
-`delivery: "file"`), then read the file into the child process. Chat is never
-the channel for a value. The master password stays with the user: no
-`--passwordenv`, no `--passwordfile`.
+is gone by the next call. For Bitwarden, ask the user to run `bw unlock` in
+their terminal and hand over the session key through the harness's secret
+prompt (T3 Code: `request_secret`, `delivery: "file"`); use the same route for
+a one-off value. Read the file into the command as above, and delete it
+(`rm -f "<session-file>"`) after the task's last `bw` call. Never run
+`bw unlock` or `bw login` in your own shell: they print the session key
+(`--raw` prints nothing else) into the tool result. Chat is never the channel
+for a value. The master password stays with the user: no `--passwordenv`, no
+`--passwordfile`.
 
 Lock nothing you did not unlock; the session belongs to the user.
 
