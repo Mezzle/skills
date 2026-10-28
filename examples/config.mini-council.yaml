@@ -1,0 +1,32 @@
+# Optional mini-council settings for .agents/config.yaml.
+# Read by the in-progress mini-council skill. Every key is optional.
+
+mini_council:
+  max_rounds: 4 # counts the opening round
+  # Without members, every free model in the catalogue is used, up to five.
+  members:
+    - provider: OpenCode
+      model: opencode/deepseek-v4.1-flash-free
+      effort: max
+    - provider: OpenCode
+      model: opencode/glm-5.3-flash-free
+      effort: max
+    - provider: OpenCode
+      model: opencode/nemotron-3.5-super-vl-free
+      effort: xhigh
+    - provider: OpenCode
+      model: opencode/mimo-v2.6-flash-free # no options exposed
+    - provider: OpenCode
+      model: opencode/flint-40b-free
+      effort: max
+  # Arm A for `mini council compare`. A starting point; adjust to taste.
+  compare_with:
+    - provider: Claude
+      model: Claude Sonnet
+      effort: high
+    - provider: Codex
+      model: GPT Luna
+      effort: high
+    - provider: Pi
+      model: google/gemini-3.5-flash
+      effort: high # Pi calls this `thinking`
