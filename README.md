@@ -43,7 +43,7 @@ Adapted from Theo Browne's [tstack](https://github.com/t3dotgg/tstack) (MIT, see
 - [full-stop](skills/engineering/full-stop/SKILL.md) — `full-send`, but stop when the PR is ready for a human to merge.
 - [leaving-pr-comments](skills/engineering/leaving-pr-comments/SKILL.md) — format comments an agent posts on your behalf.
 - [modernize](skills/engineering/modernize/SKILL.md) — rebase an old PR and decide whether it should still exist.
-- [review-loop](skills/engineering/review-loop/SKILL.md) — have a model from another provider review a change in a loop until both agree.
+- [review-loop](skills/engineering/review-loop/SKILL.md) — have a model from another provider review a change for bugs, spec and standards in a loop until both agree. The spec and standards axes are adapted from Matt Pocock's [`code-review`](https://github.com/mattpocock/skills) skill (MIT, see [NOTICE](NOTICE)).
 - [secrets](skills/engineering/secrets/SKILL.md) — read credentials from 1Password or Bitwarden at runtime without leaking them.
 - [takeover](skills/engineering/takeover/SKILL.md) — finish someone else's PR, branch or agent thread, keeping their credit.
 
@@ -53,7 +53,7 @@ The PR and review skills read `.agents/config.yaml` at the root of the repo they
 
 | Key | Used by | Meaning |
 |---|---|---|
-| `tracker` | file-pr, full-send | `jira`, `github`, `linear`, or `none`. Without it, inferred from recent PRs. |
+| `tracker` | file-pr, full-send, review-loop | `jira`, `github`, `linear`, or `none`. Without it, inferred from recent PRs. |
 | `review_bots.request` | file-pr, babysit-pr | Bots to request a review from on filing and after every push, e.g. `copilot`. |
 | `review_bots.wait_for` | babysit-pr | Bots that must review the head before the PR is ready. Without it, `pr-wait` works it out from the PR. |
 | `reviewer` | review-loop | `provider`, `model`, optional `effort`. Defaults to the latest GPT Sol. |

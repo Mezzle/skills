@@ -59,6 +59,17 @@ Use one diff command all rounds. State intent and out-of-scope in 1-2
 sentences. Run covering checks. Do not send code this change breaks. Note
 missing or pre-failing checks in the brief.
 
+### Spec and standards
+
+Find the spec, first match wins: issue refs in the change's commit messages
+(fetch through `tracker` in `.agents/config.yaml`), a path the user gave, a
+file under `docs/`, `specs/` or `.scratch/` matching the branch or feature.
+None found: `Spec: none`, and the reviewer checks against intent.
+
+List the standards sources: every file that documents how code is written
+here, including `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `AGENTS.md` and
+`CLAUDE.md` when they exist. None found: `Standards: none`.
+
 ### Optional security pass
 
 Read `security_review` in `.agents/config.yaml`. For an explicit security
@@ -98,12 +109,25 @@ Round 1 brief (T3 children get no history):
 ```
 Review only. Do not edit, commit, push, comment on PRs, or start subagents.
 Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <results>
+Spec: <issue, path, or none> Standards: <files, or none>
 See: git diff <base> [-- <paths>]; git status --short (read untracked).
-Read surrounding code. Find bugs, broken callers, mismatch with intent.
-Skip style unless it hides a bug. Hold to the smallest change. Flag code,
-tests, or guards the intent does not need. Other paths, rare cases, small
-perf, extra compat: nits.
-blocker = intended case wrong. should = real bug callers will hit, in intent. nit = rest.
+Read surrounding code, the spec and the standards. Check:
+- Bugs: wrong behaviour, broken callers.
+- Spec: requirements missing, partial or implemented wrong. Quote the spec
+  line. Spec none: check against intent.
+- Standards: breaches of a documented standard (cite file and rule). Also
+  these smells, each a judgement call labelled "possible <smell>": Mysterious
+  Name, Duplicated Code, Feature Envy, Data Clumps, Primitive Obsession,
+  Repeated Switches, Shotgun Surgery, Divergent Change, Speculative
+  Generality, Message Chains, Middle Man, Refused Bequest. A documented
+  standard overrides a smell. Skip what tooling enforces.
+Hold to the smallest change. Flag code, tests, guards or abstractions the
+intent does not need: scope creep. Other paths, rare cases, small perf,
+extra compat: nits.
+blocker = intended case wrong, or a spec requirement missing or wrong.
+should = real bug callers will hit, in intent, or a documented-standard breach.
+nit = smells, scope creep, the rest.
+Only nits: APPROVE, unless there are a lot of them.
 Reply:
 VERDICT: APPROVE or CHANGES
 S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion> (stable ids)
@@ -119,6 +143,7 @@ small cost is a nit, whatever label it came with.
   that fails without the fix, if intent needs it.
 - Disagree: say why, with evidence (file:line, test, output).
 - Out of scope or nit: decline in one line. List as follow-up.
+- Smell: take the fix only if it shrinks the diff.
 
 Update the ledger. Re-run checks and `git diff --shortstat <base>`. If
 review grew the diff, cut first. Do not agree just to end the loop.

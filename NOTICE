@@ -45,3 +45,9 @@ skill (https://github.com/mattpocock/skills, skills/engineering/pr), used under
 the MIT licence, Copyright (c) 2026 Matt Pocock. That skill's menu of visuals
 and its placement guidance come from Dex Horthy's `show-me` skill
 (https://github.com/humanlayer/skills, plugins/show-me/skills/show-me).
+
+The spec and standards axes and the code-smell list in the review-loop brief
+(skills/engineering/review-loop) are adapted from Matt Pocock's `code-review`
+skill (https://github.com/mattpocock/skills), used under the MIT licence,
+Copyright (c) 2026 Matt Pocock. The smells are from Martin Fowler's
+_Refactoring_, chapter 3.

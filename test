@@ -17,5 +17,9 @@ case "${1:-check}" in
     shift
     exec python3 scripts/skill_tests.py behaviour --provider codex "$@"
     ;;
+  review)
+    shift
+    exec python3 scripts/review_tests.py "$@"
+    ;;
   *) exec python3 scripts/skill_tests.py "$@" ;;
 esac
