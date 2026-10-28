@@ -9,6 +9,7 @@
     "./skills/engineering/leaving-pr-comments",
     "./skills/engineering/modernize",
     "./skills/engineering/review-loop",
+    "./skills/engineering/secrets",
     "./skills/engineering/takeover"
   ]
 }

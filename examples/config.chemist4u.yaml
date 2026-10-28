@@ -1,5 +1,5 @@
 # Copy to .agents/config.yaml at the root of a Chemist4U repo.
-# Read by babysit-pr, file-pr, council, review-loop, and full-send.
+# Read by babysit-pr, file-pr, council, review-loop, secrets, and full-send.
 # Every key is optional. A missing key falls back to the skill's default.
 
 tracker: jira # jira | github | linear | none
@@ -25,6 +25,9 @@ council:
   - provider: Copilot
     model: Gemini Argon
     effort: high
+
+secrets:
+  manager: bitwarden # work secrets
 
 # Optional draft: install security-review separately before enabling auto mode.
 # These are skill settings, not API/harness options or proof of Blue access.

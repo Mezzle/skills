@@ -1,5 +1,5 @@
 # Copy to .agents/config.yaml at the root of a personal repo.
-# Read by babysit-pr, file-pr, council, review-loop, and full-send.
+# Read by babysit-pr, file-pr, council, review-loop, secrets, and full-send.
 # Every key is optional. A missing key falls back to the skill's default.
 
 tracker: github # jira | github | linear | none
@@ -26,6 +26,9 @@ council:
   - provider: OpenCode
     model: zai-coding-plan/glm-5.3
     effort: max
+
+secrets:
+  manager: 1password # personal secrets
 
 # Optional draft: install security-review separately before enabling auto mode.
 # These are skill settings, not API/harness options or proof of Blue access.
