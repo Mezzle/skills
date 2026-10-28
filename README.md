@@ -17,6 +17,19 @@ git clone git@github.com:Mezzle/skills.git
 cp -r skills/skills/<bucket>/<skill-name> ~/.claude/skills/
 ```
 
+For an editable local installation in both Codex and Claude Code:
+
+```bash
+python3 scripts/install_skills.py --draft security-review
+```
+
+This links promoted skills and the selected draft to this checkout, preserving
+replaced installations under `~/.local/state/mezzle-skills/backups/`. Omit
+`--draft security-review` to install promoted skills only. Keep the checkout in
+place; moving it requires rerunning the installer. Skills become available on
+your next turn. Installing the draft does not enable automatic security review
+or provision Daybreak access; use the configuration below when needed.
+
 ## Skills
 
 ### Engineering
@@ -44,8 +57,38 @@ The PR and review skills read `.agents/config.yaml` at the root of the repo they
 | `review_bots.wait_for` | babysit-pr | Bots that must review the head before the PR is ready. Without it, `pr-wait` works it out from the PR. |
 | `reviewer` | review-loop | `provider`, `model`, optional `effort`. Defaults to the latest GPT Sol. |
 | `council` | council | A list of three `provider` / `model` / `effort` entries. Defaults to the latest flagship from three makers. |
+| `security_review` | security-review, review-loop, babysit-pr; inherited by full-send/full-stop | Opt-in draft security review. See the setup below. |
 
 A model family such as `GPT Sol` means the latest in that family. An exact ID pins it. Examples: [Chemist4U](examples/config.chemist4u.yaml), [personal](examples/config.personal.yaml).
+
+### Draft security review
+
+The security-review draft is not included in the plugin or normal installation.
+To try it, copy `skills/in-progress/security-review/` into your harness's skills
+directory, including `references/`. The source checkout's workflow hooks can
+also read it directly. Enable it in the target repo's `.agents/config.yaml`:
+
+```yaml
+security_review:
+  mode: auto # manual (default) | auto for changes to trust boundaries/findings
+  access_program: daybreak_blue # standard (default) | daybreak_blue
+  require_blue: false # true makes missing verified Blue access a blocker
+  # Optional provider, model and effort; explicit user choices take precedence.
+  # Omit them to use the current model; verify its Blue eligibility separately.
+```
+
+These are skill settings, not harness or API fields. They neither grant access
+nor change the general reviewer or council. An explicit security-review request
+also invokes the skill in manual mode. Automatic invocation requires a changed
+security assumption or substantive security finding; ordinary edits keep the
+existing workflow. If the skill is needed but missing, the workflow reports an
+incomplete security review. With no settings or request, behaviour is unchanged.
+
+Blue use requires an eligible model, approved access and an enabled request path.
+`require_blue: false` permits a disclosed standard review if Blue is unavailable;
+`true` requires `access_program: daybreak_blue` and verified access. See the
+[delivery and evaluation plan](docs/plans/daybreak-blue.md) for promotion gates
+and planned extensions.
 
 ## Structure
 
@@ -66,6 +109,11 @@ Buckets follow the same convention as Matt Pocock's [skills](https://github.com/
 Only skills under `productivity/`, `engineering/`, and `misc/` are listed in the top-level `README.md` and `.claude-plugin/plugin.json`.
 
 ## Contributing
+
+Run the [skill tests](tests/README.md) before changing skill behaviour. Offline
+checks run in CI. The optional council matrix exercises security-review across
+three model makers in separate fixture repositories; a Codex CLI runner remains
+available for single-model checks, alongside a standalone Claude CLI adapter.
 
 Open to PRs from teammates — see [CLAUDE.md](CLAUDE.md) for repo conventions and [CONTEXT.md](CONTEXT.md) for terminology.
 

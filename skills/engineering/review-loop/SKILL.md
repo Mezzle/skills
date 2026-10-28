@@ -35,7 +35,9 @@ named. If no route runs it, report the blocker.
   the user asks.
 - Stop early if a round returns only nits. Declined nits and comment,
   doc, or format-only fixes need no new round.
-- One reviewer only. The reviewer must not start subagents or reviewers.
+- One general reviewer only. An enabled security pass below may use its
+  configured route sequentially. All review passes share this round budget;
+  reviewers must not start subagents or reviewers.
 - Keep a ledger: id, severity, outcome, usage if returned. Never guess it.
 
 ## 1. Scope
@@ -56,6 +58,24 @@ The change is base to working tree in those paths, with untracked files.
 Use one diff command all rounds. State intent and out-of-scope in 1-2
 sentences. Run covering checks. Do not send code this change breaks. Note
 missing or pre-failing checks in the brief.
+
+### Optional security pass
+
+Read `security_review` in `.agents/config.yaml`. For an explicit security
+review request, or `mode: auto` when the change alters a trust boundary,
+load the available `security-review` skill. In this source checkout its draft
+is [here](../../in-progress/security-review/SKILL.md); copied installations
+need that skill installed separately. If it is needed but unavailable, report
+an incomplete security review rather than silently skipping it.
+
+Run the security pass before general review, sharing the fixed base, scope,
+ledger and round budget. Preserve the general reviewer selected above. If it
+also satisfies the security route settings, combine both briefs in one pass;
+otherwise run the passes sequentially. Include security findings in the
+general review brief and recheck material security fixes within the remaining
+budget. Readiness requires both reviews to cover the current behaviour, with
+no open material findings or incomplete required security review. An absent
+configuration leaves this workflow unchanged unless explicitly requested.
 
 ## 2. Start the reviewer
 

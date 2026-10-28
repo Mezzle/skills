@@ -111,6 +111,11 @@ next. Name the test that failed without the change and passes with it. For a
 new feature the "before" is that test, or a synth or build, failing or lacking
 the new output. Always list what you could not verify.
 
+If a security review ran, include its scope/head, material finding dispositions,
+patch-validation evidence and limitations here. Name Daybreak Blue only when
+the review verified its use; otherwise state standard or unverified access.
+Reuse the review result rather than launching another pass to file the PR.
+
 ### Merge Danger
 
 A two-way door can be rolled back cheaply. A one-way door cannot: data

@@ -109,6 +109,15 @@ reply to a Macroscope finding. Its findings cite them.
 CodeRabbit is advisory. Treat its findings like any other finding, but never
 wait for it and never hold a merge for it.
 
+For a substantive security finding, use the available `security-review` skill
+when explicitly requested or `security_review.mode: auto` is configured.
+The source draft is [here](../../in-progress/security-review/SKILL.md);
+copied installations need it installed separately. If needed but unavailable,
+report an incomplete security review. Share the PR's finding ledger and
+recheck affected security findings after material fixes, reusing evidence that
+still covers the current code. Include unresolved material findings or an
+incomplete required security review in the readiness blockers.
+
 If a review bot leaves feedback you believe is not worth addressing, reply with
 a written reason and resolve the comment. Use the `leaving-pr-comments` skill
 for every comment posted on the user's behalf.
