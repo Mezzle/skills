@@ -1,0 +1,15 @@
+[
+  {"id": "clean", "expect": {"verdict": "APPROVE", "hits": []}},
+  {"id": "bug", "expect": {"verdict": "CHANGES", "hits": [
+    {"file": "invoice.py", "lines": [13, 14], "min_severity": "should"}],
+    "allow": [{"file": "test_invoice.py", "lines": [10, 11]}]}},
+  {"id": "spec-gap", "expect": {"verdict": "CHANGES", "hits": [
+    {"file": "invoice.py", "lines": [9, 11], "min_severity": "should"}],
+    "allow": [{"file": "test_invoice.py", "lines": [10, 11]}]}},
+  {"id": "standards", "expect": {"verdict": "CHANGES", "hits": [
+    {"file": "invoice.py", "lines": [13, 13], "min_severity": "should"}]}},
+  {"id": "scope-creep", "expect": {"verdict": "APPROVE", "hits": [
+    {"file": "invoice.py", "lines": [9, 20], "min_severity": "nit"}]}},
+  {"id": "smell", "expect": {"verdict": "APPROVE", "hits": [
+    {"file": "invoice.py", "lines": [13, 13], "min_severity": "nit"}]}}
+]

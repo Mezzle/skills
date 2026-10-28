@@ -184,7 +184,7 @@ def case_prompt(case):
             'Explain access limitations and routing decisions.')
 
 
-def provider_command(provider, args, work, artifact):
+def provider_command(provider, args, work, artifact, schema=SCHEMA):
     if provider == 'codex':
         command = ['codex', 'exec', '--ignore-user-config', '--ephemeral',
                    '--sandbox', 'read-only', '--cyber-access-program', 'standard',
@@ -206,7 +206,7 @@ def provider_command(provider, args, work, artifact):
     settings_path = artifact / 'claude-settings.json'
     settings_path.write_text(json.dumps(settings, indent=2))
     command = ['claude', '--print', '--verbose', '--output-format', 'stream-json',
-               '--json-schema', json.dumps(SCHEMA), '--no-session-persistence',
+               '--json-schema', json.dumps(schema), '--no-session-persistence',
                '--restricted', '--tools', 'Read,Glob,Grep,Bash',
                '--allowedTools', 'Read,Glob,Grep,Bash', '--permission-mode', 'dontAsk',
                '--setting-sources', '', '--settings', str(settings_path),

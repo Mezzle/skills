@@ -202,6 +202,31 @@ command in the tool trace. Semantic quality of evidence and whether every other
 reported command was actually executed still require inspecting the trace. Passing this small
 suite is useful regression evidence, not a security certification.
 
+## review-loop brief A/B
+
+Compares the review-loop reviewer brief at a git revision (default `main`)
+with the working tree. The original bugs-only brief is at `ed36278`; pass
+`--baseline ed36278` once the merged brief is on `main`. Each case is one change to a small invoice fixture with
+one planted defect: a rounding bug, a missed spec requirement, a documented
+standard breach, scope creep, duplicated code, or none (the clean control).
+Both arms get the same fixture, model, intent and JSON wrapper; only the
+rendered `Round 1 brief` differs. The baseline arm gets no spec or standards
+pointers, since finding them is part of the change under test.
+
+```bash
+./test review --repeat 3                                    # Codex, its default model
+./test review --provider claude --model opus --effort high --claude-allow-unix-sockets
+./test review --baseline <ref> --case bug --case clean
+```
+
+A case passes when the reviewer reports a finding inside the planted line range
+at or above its minimum severity, with the expected verdict. A false positive
+is a blocker or should outside every planted range; any on the clean change
+fails it. The rounding bug and spec gap get past a weak discount test, so a
+finding on that test is allowed rather than counted. Results go to `.eval-results/review-loop/<run>/`, with a side-by-side
+`summary.md`. They are kept apart from `./test results`. One pass per case:
+the loop's later rounds are not exercised.
+
 ## Extending the suite
 
 Add fixtures under `fixtures/` and cases under `cases/`; keep expected outcomes
