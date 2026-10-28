@@ -45,6 +45,8 @@ one appears.
 1. **Finish the change.** Complete the goal from the user's request with the
    smallest change that works. Fix the case that happened, not every case
    that could. If you are on the default branch, create a branch first.
+   Any credential the work or its proof needs goes through the `secrets`
+   skill.
 2. **Prove it.** Get proof for every change you made. See "Proof".
 3. **Get feedback.** Use the `review-loop` skill to verify changes, including
    its optional security pass when enabled. Carry its findings and access
