@@ -51,3 +51,8 @@ The spec and standards axes and the code-smell list in the review-loop brief
 skill (https://github.com/mattpocock/skills), used under the MIT licence,
 Copyright (c) 2026 Matt Pocock. The smells are from Martin Fowler's
 _Refactoring_, chapter 3.
+
+The wayfinder skill (skills/engineering/wayfinder) is adapted from Matt
+Pocock's `wayfinder` skill (https://github.com/mattpocock/skills),
+Copyright (c) 2026 Matt Pocock, under the MIT licence reproduced above.
+It adds tracker-independent readiness roles for human and agent pickup.

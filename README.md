@@ -47,6 +47,8 @@ Adapted from Theo Browne's [tstack](https://github.com/t3dotgg/tstack) (MIT, see
 - [secrets](skills/engineering/secrets/SKILL.md) — read credentials from 1Password or Bitwarden at runtime without leaking them.
 - [takeover](skills/engineering/takeover/SKILL.md) — finish someone else's PR, branch or agent thread, keeping their credit.
 
+- [wayfinder](skills/engineering/wayfinder/SKILL.md) — map a large effort as decision tickets, routing ready work to humans or agents. Adapted from Matt Pocock’s `wayfinder` (MIT, see [NOTICE](NOTICE)).
+
 ## Configuration
 
 The PR and review skills read `.agents/config.yaml` at the root of the repo they run in. Every key is optional. Without the file they fall back to their defaults and work out what they can from the repo.
