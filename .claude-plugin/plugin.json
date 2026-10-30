@@ -10,6 +10,7 @@
     "./skills/engineering/modernize",
     "./skills/engineering/review-loop",
     "./skills/engineering/secrets",
-    "./skills/engineering/takeover"
+    "./skills/engineering/takeover",
+    "./skills/engineering/wayfinder"
   ]
 }
