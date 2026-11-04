@@ -20,8 +20,9 @@ Explicit requests invoke this skill regardless of `mode`. Workflow hooks use:
   commands, queries or outbound requests. A filename or dependency update alone
   is insufficient; identify the changed security assumption first.
 - `provider`, `model`, `effort`: optional Codex Security settings, passed as
-  `--provider`, `--model` and `--effort`. Explicit user choices take precedence.
-  Omit them to use the CLI defaults.
+  `--model` and `--effort`, and `provider` as `--provider` on `scan` or
+  `--codex model_provider="<provider>"` elsewhere. Explicit user choices take
+  precedence. Omit them to use the CLI defaults.
 - `access_program: standard | daybreak_blue` (default: `standard`).
 - `require_blue: true | false` (default: `false`). True requires
   `access_program: daybreak_blue`; inconsistent settings are a configuration error.
@@ -48,14 +49,14 @@ fails, or the CLI rejects a configured `provider` or `model`, return
 Security. Otherwise review manually on the current model and record the
 scanner as unavailable, with its error.
 
-Run from the repository root with `--headless --json`:
+Run from the repository root:
 
 | Task | Command |
 |---|---|
-| Review | `scan . --diff <base> --head <head> --show-cost` |
-| Uncommitted changes | `scan . --working-tree --base HEAD --show-cost`, as a separate run |
-| Triage | `validate <finding text or file>` |
-| Patch validation | `verify-fix <finding text, file or saved ID>` |
+| Review | `scan . --diff <base> --head <head> --headless --json --show-cost` |
+| Uncommitted changes | `scan . --working-tree --base HEAD --headless --json --show-cost`, as a separate run |
+| Triage | `validate <finding text or file>` (text output only) |
+| Patch validation | `verify-fix <finding text, file or saved ID> --json` |
 
 Use only these and the read-only `scans show`, `scans logs` and `findings list`. Leave
 results in the CLI's state directory, outside the checkout. A `status: failed`
