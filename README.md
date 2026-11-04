@@ -68,7 +68,10 @@ A model family such as `GPT Sol` means the latest in that family. An exact ID pi
 ### Draft security review
 
 The security-review draft is not included in the plugin or normal installation.
-To try it, copy `skills/in-progress/security-review/` into your harness's skills
+It scans with the [Codex Security CLI](https://learn.chatgpt.com/docs/security/cli)
+(`npm:@openai/codex-security`); install it and run `codex-security login`
+first. Without the CLI it falls back to a disclosed manual review, unless a
+`provider` or `model` is configured. To try it, copy `skills/in-progress/security-review/` into your harness's skills
 directory, including `references/`. The source checkout's workflow hooks can
 also read it directly. Enable it in the target repo's `.agents/config.yaml`:
 
@@ -77,8 +80,8 @@ security_review:
   mode: auto # manual (default) | auto for changes to trust boundaries/findings
   access_program: daybreak_blue # standard (default) | daybreak_blue
   require_blue: false # true makes missing verified Blue access a blocker
-  # Optional provider, model and effort; explicit user choices take precedence.
-  # Omit them to use the current model; verify its Blue eligibility separately.
+  # Optional provider, model and effort, passed to codex-security; explicit
+  # user choices take precedence. Omit them to use the CLI defaults.
 ```
 
 These are skill settings, not harness or API fields. They neither grant access

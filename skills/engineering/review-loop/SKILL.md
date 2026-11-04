@@ -80,9 +80,8 @@ need that skill installed separately. If it is needed but unavailable, report
 an incomplete security review rather than silently skipping it.
 
 Run the security pass before general review, sharing the fixed base, scope,
-ledger and round budget. Preserve the general reviewer selected above. If it
-also satisfies the security route settings, combine both briefs in one pass;
-otherwise run the passes sequentially. Include security findings in the
+ledger and round budget. Preserve the general reviewer selected above; the
+security pass runs Codex Security separately. Include security findings in the
 general review brief and recheck material security fixes within the remaining
 budget. Readiness requires both reviews to cover the current behaviour, with
 no open material findings or incomplete required security review. An absent

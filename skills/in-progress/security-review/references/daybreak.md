@@ -9,16 +9,13 @@ Verify current model eligibility and the actual route's support using the
 Model eligibility changes; a latest-family selection does not establish it.
 Blue approval does not grant access to specialist Cyber models.
 
-For Responses API routes, approved organisation/project access and model access
-must be enabled. Select `access_programs.cyber: daybreak_blue` explicitly.
-Inspect the returned model and effective programme when exposed. A successful
-ordinary response or model-list entry alone does not prove Blue is active.
-
-For Codex routes, verify approved workspace/user access and the Daybreak request
-setting through the supported client. For delegates, check the child route's
-access separately; parent settings are not evidence of inheritance. Only pass
-settings the harness actually exposes. Repository configuration expresses
-intent; it cannot provision access or invent a delegate option.
+Request Blue explicitly: `scan --cyber-access-program daybreak_blue`, and
+`--codex daybreak=true` on `validate` and `verify-fix`. For standard treatment,
+pass `scan --cyber-access-program standard`. The scan flag is experimental and
+OpenAI-provider only; a rejected flag leaves access `unverified`. An accepted
+flag, a dry run or a successful scan alone does not prove Blue is active;
+inspect the returned model and effective programme when the output exposes
+them. Repository configuration expresses intent; it cannot provision access.
 
 Record access as `verified Blue`, `standard`, or `unverified`, with the evidence
 available. When Blue cannot be verified:

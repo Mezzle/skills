@@ -29,12 +29,12 @@ council:
 secrets:
   manager: bitwarden # work secrets
 
-# Optional draft: install security-review separately before enabling auto mode.
-# These are skill settings, not API/harness options or proof of Blue access.
+# Optional draft: install security-review and codex-security before enabling auto mode.
+# These are skill settings, not proof of Blue access.
 # security_review:
 #   mode: auto # manual (default) | auto for changed trust boundaries/findings
 #   access_program: daybreak_blue # standard (default) | daybreak_blue
 #   require_blue: false # true requires verified Blue access
-#   provider: <route exposed by your harness>
+#   provider: openai # codex-security --provider
 #   model: <verified Blue-eligible model; not necessarily the latest>
 #   effort: high
