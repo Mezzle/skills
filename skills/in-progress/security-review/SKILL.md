@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review security-sensitive changes, run a Codex Security scan, triage a vulnerability finding, or validate a security patch in an authorised repository.
+description: Review security-sensitive changes, triage a vulnerability finding, or validate a security patch in an authorised repository.
 ---
 
 # Security review
@@ -19,16 +19,19 @@ Explicit requests invoke this skill regardless of `mode`. Workflow hooks use:
   tenant isolation, secret handling, untrusted file parsing, or input reaching
   commands, queries or outbound requests. A filename or dependency update alone
   is insufficient; identify the changed security assumption first.
-- `provider`, `model`, `effort`: optional Codex Security settings, passed as
-  `--model` and `--effort`, and `provider` as `--provider` on `scan` or
-  `--codex model_provider="<provider>"` elsewhere. Explicit user choices take
-  precedence. Omit them to use the CLI defaults.
+- `provider`, `model`, `effort`: optional route settings. Explicit user choices
+  take precedence. With no model configured, use the current model.
 - `access_program: standard | daybreak_blue` (default: `standard`).
 - `require_blue: true | false` (default: `false`). True requires
   `access_program: daybreak_blue`; inconsistent settings are a configuration error.
 
 For Blue requests, read [Daybreak access](references/daybreak.md) before
-execution. Keep existing general reviewer and council choices intact.
+execution. Keep existing general reviewer and council choices intact. If a
+different model is configured, use an available authorised delegate route;
+give it the scope, base/head, relevant code, checks and requested output below.
+In T3, resolve capabilities first and use a fresh `delegate_task` per review
+or recheck. If the route is unavailable, report the blocker rather than
+substituting another model. Delegates review only and start no subagents.
 
 ## Scope
 
@@ -39,43 +42,6 @@ Use the enclosing workflow's fixed base and finding ledger when supplied.
 Identify the assets and systems the user owns or is authorised to analyse.
 Repository review and local checks stay within the task's existing permission;
 Blue access adds no permission to test deployed or third-party systems.
-
-## Codex Security
-
-Scan with the Codex Security CLI (`codex-security`, alias `cs`). Preflight
-with `codex-security --version` and `codex-security login status`. If either
-fails, or the CLI rejects a configured `provider` or `model`, return
-`incomplete` when those settings are configured or the user asked for Codex
-Security. Otherwise review manually on the current model and record the
-scanner as unavailable, with its error.
-
-Run from the repository root:
-
-| Task | Command |
-|---|---|
-| Review | `scan . --diff <base> --head <head> --headless --json --show-cost` |
-| Uncommitted changes | `scan . --working-tree --base HEAD --headless --json --show-cost`, as a separate run |
-| Triage | `validate <finding text or file>` (text output only) |
-| Patch validation | `verify-fix <finding text, file or saved ID> --json` |
-
-Use only these and the read-only `scans show`, `scans logs` and `findings list`. Leave
-results in the CLI's state directory, outside the checkout. A `status: failed`
-result makes the scan `incomplete`, not `clear`. `codex-security <command>
---help` is the flag reference.
-
-Pass `--max-cost` only when configured; it caps the API-price estimate, not
-ChatGPT allowance.
-
-Scanner findings are candidates. Verify each one under Evidence before
-reporting it, keep its `findingId` as the stable ID, and grade severity from
-the evidence rather than the CLI's level. Discovery varies between runs, so a
-scan with no findings is not `clear` without your own Evidence pass.
-
-Scope findings to this change. The scan's `findings` are in scope.
-`repositoryFindings` spans every scan of the repository: carry forward only
-IDs already in the enclosing ledger, or with no ledger, those whose `targetId`
-matches this scan's target. A carried finding stays open until `verify-fix` or
-source evidence shows it fixed, whether or not the latest scan reconfirmed it.
 
 ## Evidence
 
@@ -111,10 +77,9 @@ required access prevent a ready verdict; budget exhaustion is not approval.
 ## Result
 
 Report `clear`, `findings`, or `incomplete`, scoped to the reviewed change.
-Include base/head and any uncommitted diff, scan IDs, model, cost, observed
-access status, findings and dispositions, checks run and limitations. `clear`
-means no open material findings in this scope, not a claim that the system is
-secure.
+Include base/head and any uncommitted diff, route/model, observed access status,
+findings and dispositions, checks run and limitations. `clear` means no open
+material findings in this scope, not a claim that the system is secure.
 
 The parent owns fixes, PR actions and readiness. When embedded, add the result
 to its existing ledger and evidence; reuse a result only while it covers the
