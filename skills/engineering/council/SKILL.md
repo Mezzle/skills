@@ -53,8 +53,13 @@ If the PR is open, edit the description. Do not post a comment for this.
 If there is no PR, put the same results in the final reply only.
 
 If you agree with their recommendations, make the changes and request a fresh
-review after. Continue this process until all delegates are satisfied with the
-outcome.
+review after. Continue until all delegates are satisfied, for at most three
+rounds, or the number the user names. Stop early if a round only repeats
+findings you already declined with a reason.
+
+At the cap, stop. Do not start another round or merge. Report the findings
+still open, each delegate's last score, and that the approach may need
+rethinking. The user decides what happens next.
 
 Do not let repeated reviews result in scope creep. It is your job to fight to
 keep scope limited.

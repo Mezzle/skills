@@ -131,6 +131,11 @@ unneeded tests, guards for edge cases that do not matter, extra integration
 or compatibility, and small performance costs. Prefer the fix that deletes or
 narrows code.
 
+Push at most three times to answer bot findings. CI fixes and human change
+requests do not count. If bots still raise findings after that, stop: unwatch,
+list the findings still open, suggest rethinking the approach, and ask the user
+whether to continue.
+
 ## Base branch and merging
 
 Keep an eye on changes to `main` and rebase when needed. After each push,
