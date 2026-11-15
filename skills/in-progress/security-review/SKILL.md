@@ -25,12 +25,14 @@ Explicit requests invoke this skill regardless of `mode`. Workflow hooks use:
 - `require_blue: true | false` (default: `false`). True requires
   `access_program: daybreak_blue`; inconsistent settings are a configuration error.
 
-For Blue requests, read [Daybreak access](references/daybreak.md) before
+For Blue requests, and for standard reviews on OpenAI or Codex routes (which
+may default to Daybreak), read [Daybreak access](references/daybreak.md) before
 execution. Keep existing general reviewer and council choices intact. If a
 different model is configured, use an available authorised delegate route;
 give it the scope, base/head, relevant code, checks and requested output below.
-In T3, resolve capabilities first and use a fresh `delegate_task` per review
-or recheck. If the route is unavailable, report the blocker rather than
+In T3, resolve capabilities first, set the child's access programme explicitly
+where the catalogue exposes one, and use a fresh `delegate_task` per review or
+recheck. If the route is unavailable, report the blocker rather than
 substituting another model. Delegates review only and start no subagents.
 
 ## Scope
