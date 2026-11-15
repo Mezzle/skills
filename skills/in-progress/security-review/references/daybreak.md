@@ -15,9 +15,9 @@ Blue approval grants no Red or specialist Cyber models.
 
 ## Selecting a programme
 
-Select the programme explicitly in both directions: `daybreak_blue` for a Blue
-review, `standard` for a standard one. Omission means different things per
-route and model (Blue by default on some mainline models, standard from
+On routes that offer a Daybreak programme, select it explicitly in both
+directions: `daybreak_blue` for a Blue review, `standard` for a standard one.
+Omission means different things per route and model (Blue by default on some mainline models, standard from
 `gpt-6.1-terra`, server defaults or a saved client choice elsewhere), so an
 omitted value supports neither `verified Blue` nor `standard`.
 
@@ -26,7 +26,7 @@ omitted value supports neither `verified Blue` nor `standard`.
   with Red approval. The response echoes `access_programs.cyber`; inspect it and
   the returned `model`.
 - **Codex CLI:** `codex exec --cyber-access-program daybreak_blue|standard`
-  (experimental, OpenAI provider only, not supported with `codex exec review`).
+  (experimental, OpenAI provider only; its help adds "Not supported with review").
   `-c daybreak=true|false` is a toggle; `/daybreak` and `daybreak = true` in
   `config.toml` persist, and resumed or forked sessions keep their saved choice.
 - **App server and Python SDK:** pass `cyberAccessProgram` on every
@@ -48,10 +48,11 @@ Record access as `verified Blue`, `standard`, or `unverified`, with the evidence
 
 - `verified Blue`: an explicit Blue value (`access_programs.cyber`,
   `cyberAccessProgram` or `--cyber-access-program`) succeeded on a Blue-eligible
-  model, plus the echoed programme where the route exposes one. The Responses
-  API guide states an explicit selection fails without access; this is
-  undocumented for Codex routes. A `daybreak=true` toggle run alone is not
-  verification.
+  model, plus the echoed programme where the route exposes one. This counts on
+  every listed route. The Responses API guide documents that an explicit
+  selection fails without access; on Codex routes this is undocumented, so
+  record that caveat with the evidence. A `daybreak=true` toggle run alone is
+  not verification.
 - Not evidence: a model-list entry, an ordinary reply, saved admin settings, the
   parent's setting, or a `daybreak_red` rejection on a mainline model
   (`400 invalid_access_program` fires whatever the entitlement).
@@ -75,10 +76,10 @@ When Blue cannot be verified:
 Do not change account settings, obtain credentials, or build a new API adapter
 as an implicit part of reviewing code. Report the setup needed. Authorisation
 and approved internal use remain prerequisites for Daybreak work; access does
-not expand the task's scope. For open-source code, a licence permitting use,
-study and modification authorises source analysis and testing an instance on
-the user's own hardware; anyone else's deployment needs that party's explicit
-permission.
+not expand the task's scope. For third-party open-source code, a licence
+permitting use, study and modification (and not forbidding analysis or reverse
+engineering) authorises source analysis and testing an instance on the user's
+own hardware; anyone else's deployment needs that party's explicit permission.
 
 Sources (checked 15 November 2026):
 
