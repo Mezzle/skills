@@ -43,20 +43,19 @@ op read op://dev/deploy/key | gh secret set DEPLOY_KEY
 
 `op run` masks values in its output; `op read` prints raw, so pipe it.
 
-**Bitwarden** (`bw`). Reference: the item ID. Every `bw` call needs the
-session key the user handed over (see below) in `BW_SESSION`, read from the
-delivered file in the same command. Never pass it as `--session`: argv shows
-in the process list.
+**Bitwarden** (`bw`). Reference: the item ID. On macOS, run every `bw` call
+through `scripts/bw-run` from this skill's directory (use its absolute path).
+It sets `BW_SESSION` from a session cached in the Keychain, unlocking first
+if needed (see below), so no session key passes through the agent.
 
 ```bash
-BW_SESSION="$(<"<session-file>")" bw list items --search <name> | jq '.[] | {id, name}'
-API_TOKEN="$(BW_SESSION="$(<"<session-file>")" bw get password <item-id>)" npm test
-BW_SESSION="$(<"<session-file>")" bw get password <item-id> | gh secret set API_TOKEN
+bw-run list items --search <name> | jq '.[] | {id, name}'
+API_TOKEN="$(bw-run get password <item-id>)" npm test
+bw-run get password <item-id> | gh secret set API_TOKEN
 ```
 
 `bw` never masks. Run only commands that leave the value out of their output:
 no `printenv`, `env`, `set -x` or debug logging with the variable in scope.
-Check the vault state with `BW_SESSION="$(<"<session-file>")" bw status | jq -r .status`.
 
 `op item get --reveal`, `op run --no-masking`, `bw get item`, unfiltered
 `bw list items` and `cat` on a plaintext secret file all print values. Use the
@@ -64,22 +63,30 @@ forms above instead.
 
 ## Locked vault or missing CLI
 
-Locked, signed out, or the CLI is absent: stop and tell the user. They unlock
-in their own terminal. `op` may show a biometric prompt; that is the user
-approving the read.
+`op` may show a biometric prompt, and `bw-run` a native master-password
+dialog; either is the user approving the read. `bw-run` reuses the session
+for 8 hours (`BW_RUN_TTL`), shared by every agent on the machine, so the
+dialog appears about once a working day. After that it asks again; the old
+key stays valid until that next unlock. When it fails with a `bw-run:` line on
+stderr (dialog cancelled or timed out, wrong password, CLI signed out or
+missing), stop and pass the line to the user; run it again only when they say
+so. An unattended run has nobody to answer the dialog, so it fails the same
+way. Other failures are `bw`'s own (item not found and so on).
 
-Shell state does not persist between tool calls, so an exported `BW_SESSION`
-is gone by the next call. For Bitwarden, ask the user to run `bw unlock` in
-their terminal and hand over the session key through the harness's secret
-prompt (T3 Code: `request_secret`, `delivery: "file"`); use the same route for
-a one-off value. Read the file into the command as above, and delete it
-(`rm -f "<session-file>"`) after the task's last `bw` call. Never run
-`bw unlock` or `bw login` in your own shell: they print the session key
-(`--raw` prints nothing else) into the tool result. Chat is never the channel
-for a value. The master password stays with the user: no `--passwordenv`, no
-`--passwordfile`.
+`bw-run` is the only route to an unlock. `bw unlock` and `bw login` print the
+session key into the tool result, and `--passwordenv` / `--passwordfile`
+hand the master password to the agent, so those stay in the user's own
+terminal (`bw-run` refuses `unlock`, `login` and `--session`). The session belongs to the user and other
+agents: leave it unlocked.
 
-Lock nothing you did not unlock; the session belongs to the user.
+Where `bw-run` cannot run (not macOS, no GUI session), or `op` is
+missing, locked or signed out: stop and tell the user. For Bitwarden, ask them to run
+`bw unlock` in their terminal and hand over the session key through the
+harness's secret prompt (T3 Code: `request_secret`, `delivery: "file"`); use
+the same route for a one-off value. Read it in the same command
+(`BW_SESSION="$(<"<session-file>")" bw ...`, never `--session`: argv shows in
+the process list) and `rm -f` the file after the task's last `bw` call. Chat
+is never the channel for a value.
 
 ## Write to the vault
 
