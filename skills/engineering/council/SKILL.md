@@ -7,18 +7,33 @@ description: Trigger this if the user says 'council'.
 
 Bring in three delegates to help with the user's request, usually for review
 or feedback. Use one strong model from each of three different model makers,
-at high reasoning effort. Two members can share a route: GPT and Gemini can
-both run through Copilot.
+at the effort picked below. Two members can share a route: GPT and Gemini
+can both run through Copilot.
 
 Pick the members in this order:
 
 1. Members the user names in the request.
 2. The `council` list in `.agents/config.yaml` at the repo root. Each entry has
    a `provider` (the route, as the harness names it), a `model`, and an
-   optional `effort`. A model family such as `GPT Sol` means the latest model
+   optional `effort`. A model family such as `GPT Astra` means the latest model
    in that family. An exact ID pins it.
-3. The latest flagship from each maker, for example Claude Opus, GPT Sol, and
-   Gemini Pro.
+3. Each maker's pick from the [Artificial Analysis Intelligence Index vs
+   cost per task](https://artificialanalysis.ai/#intelligence) chart. Consider
+   only `high` and `xhigh` efforts; never `max`, which overthinks. Take the
+   cheapest model and effort within 1 point of that maker's best score.
+   Snapshot, 22 November 2026:
+
+   | Maker | Pick | Index | Cost per task | Passed over |
+   | --- | --- | --- | --- | --- |
+   | Anthropic | Claude Fable (high) | 62 | $9.08 | Fable xhigh 62, $14.83; Opus xhigh 57, $6.05 |
+   | OpenAI | GPT Astra (xhigh) | 62 | $2.52 | Astra high 60, $2.07; Sol xhigh 56, $0.65 |
+   | Google | Gemini Neon (high) | 60 | $3.74 | Neon xhigh 61, $6.44; Carbon high 60, $7.76 |
+
+   If a maker has released a model since the snapshot, check the chart again.
+
+Claude Fable requires 30-day data retention. Get explicit consent before
+sending it code or data. If consent is declined or unavailable, use Claude
+Opus at `xhigh` and report the fallback.
 
 In T3 Code, use `orchestrator_capabilities` to resolve the models, then
 `delegate_task` to start one delegate per model in parallel. Elsewhere, use
@@ -43,9 +58,9 @@ Rounds: 2
 
 | Delegate | Round 1 | Round 2 |
 | --- | --- | --- |
-| Claude Opus | 7/10 | 9/10 |
-| GPT Sol | 8/10 | 10/10 |
-| Gemini Pro | 7/10 | 9/10 |
+| Claude Fable | 7/10 | 9/10 |
+| GPT Astra | 8/10 | 10/10 |
+| Gemini Neon | 7/10 | 9/10 |
 ```
 
 If a delegate gives no score, write `no score`. Do not invent one.

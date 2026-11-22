@@ -59,7 +59,7 @@ The PR and review skills read `.agents/config.yaml` at the root of the repo they
 | `review_bots.request` | file-pr, babysit-pr | Bots to request a review from on filing and after every push, e.g. `copilot`. |
 | `review_bots.wait_for` | babysit-pr | Bots that must review the head before the PR is ready. Without it, `pr-wait` works it out from the PR. |
 | `reviewer` | review-loop | `provider`, `model`, optional `effort`. Defaults to the latest GPT Sol. |
-| `council` | council | A list of three `provider` / `model` / `effort` entries. Defaults to the latest flagship from three makers. |
+| `council` | council | A list of three `provider` / `model` / `effort` entries. Defaults to each maker's cheapest model and effort within one index point of its best eligible score on Artificial Analysis; eligible efforts are `high` and `xhigh`. |
 | `secrets` | secrets; inherited by full-send/full-stop | `manager`: `1password` or `bitwarden`, optional default `vault`. Without it, the user's instructions decide, else the agent asks. |
 | `security_review` | security-review, review-loop, babysit-pr; inherited by full-send/full-stop | Opt-in draft security review. See the setup below. |
 
