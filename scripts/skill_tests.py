@@ -90,6 +90,18 @@ def run(command, cwd, **kwargs):
                           check=True, **kwargs)
 
 
+def baseline_diff(git_dir, work):
+    """Diff the agent's tree against a .git saved before the agent ran.
+
+    The agent can write work/.git/config, and git runs commands named there
+    (core.fsmonitor, diff and filter drivers), so never run git on that copy.
+    """
+    env = {key: value for key, value in os.environ.items() if not key.startswith('GIT_')}
+    env.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull)
+    return run(['git', f'--git-dir={git_dir}', f'--work-tree={work}', 'diff', 'HEAD'],
+               work, env=env).stdout
+
+
 def prepare(work, case):
     shutil.copytree(ROOT / 'tests/fixtures/security-review', work, dirs_exist_ok=True,
                     ignore=shutil.ignore_patterns('__pycache__'))
@@ -309,9 +321,12 @@ def behavioural(args):
         for repetition in range(args.repeat):
             artifact = output / f"{case['id']}-{repetition + 1}"
             artifact.mkdir()
-            with tempfile.TemporaryDirectory(prefix='skill-eval-') as temporary:
+            with (tempfile.TemporaryDirectory(prefix='skill-eval-') as temporary,
+                  tempfile.TemporaryDirectory(prefix='skill-eval-git-') as baseline):
                 work = Path(temporary)
                 original_hash = prepare(work, case)
+                git_dir = Path(baseline) / 'git'
+                shutil.copytree(work / '.git', git_dir)
                 schema = artifact / 'schema.json'
                 schema.write_text(json.dumps(SCHEMA))
                 prompt = case_prompt(case)
@@ -347,7 +362,7 @@ def behavioural(args):
                         errors = grade(case, answer, work, original_hash, events)
                     except (OSError, ValueError, TypeError) as exc:
                         errors = [f'Invalid or missing result: {exc}']
-                (artifact / 'diff.txt').write_text(run(['git', 'diff', 'HEAD'], work).stdout)
+                (artifact / 'diff.txt').write_text(baseline_diff(git_dir, work))
                 result = {'case': case['id'], 'repetition': repetition + 1,
                           'planned_repetitions': args.repeat,
                           'passed': not errors, 'errors': errors,
