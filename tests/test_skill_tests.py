@@ -85,6 +85,19 @@ class GraderTests(unittest.TestCase):
             self.assertIn('No successful fixture check in the agent tool trace',
                           runner.grade(case, answer, work, original_hash))
 
+    def test_diff_ignores_config_the_agent_wrote(self):
+        with tempfile.TemporaryDirectory() as baseline:
+            git_dir = Path(baseline) / 'git'
+            shutil.copytree(self.work / '.git', git_dir)
+            marker = Path(baseline) / 'ran'
+            with (self.work / '.git/config').open('a') as config:
+                config.write(f'[core]\n\tfsmonitor = touch {marker}; false\n'
+                             f'[diff]\n\texternal = touch {marker}; false\n')
+            (self.work / 'app.py').write_text('# changed by the agent\n')
+            diff = runner.baseline_diff(git_dir, self.work)
+            self.assertFalse(marker.exists())
+            self.assertIn('+# changed by the agent', diff)
+
     def test_patch_validation_requires_reported_check(self):
         self.case = CASES[1]
         self.answer.update(verdict='clear', findings=[])
